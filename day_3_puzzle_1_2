@@ -1,0 +1,28 @@
+def check_tree(current_mapline, curr_posn):
+    if current_mapline[curr_posn] == "#":
+        return 1
+    return 0
+
+
+def check_course(r_step, d_step):
+    trees_encountered = 0
+    curr_posn = 0
+
+    with open("tree_map.txt") as tree_map_file:
+        tree_map = tree_map_file.read().splitlines()
+        for i in range(0, len(tree_map), d_step):
+            map_line = tree_map[i]
+            trees_encountered += check_tree(map_line, curr_posn % (len(map_line)))
+            curr_posn += r_step
+        print("Down ", d_step, " Right ", r_step, " Encounters ", trees_encountered, " trees")
+        return trees_encountered
+
+
+if __name__ == '__main__':
+    r_1_d_1 = check_course(1, 1)
+    r_3_d_1 = check_course(3, 1)
+    r_5_d_1 = check_course(5, 1)
+    r_7_d_1 = check_course(7, 1)
+    r_1_d_2 = check_course(1, 2)
+    print("Product: ", r_1_d_2 * r_7_d_1 * r_5_d_1 * r_3_d_1 * r_1_d_1)
+
