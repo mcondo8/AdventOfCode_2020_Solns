@@ -1,0 +1,37 @@
+
+# input a string and a target character which represents 1.
+# All other characters represent 0
+# Return the integer value of the string as though it were binary
+
+
+def string_to_binary(boarding_input, target_char):
+    strArr = list(boarding_input)
+    output = 0
+    for i in range(0, len(strArr)):
+        output += (strArr[i] == target_char) * 2 ** ( len(strArr) - (i+1))
+    print(boarding_input, " parses to ", output)
+    return output
+
+
+
+if __name__ == '__main__':
+    with open("boarding_passes.txt") as bp_file:
+        b_passes = bp_file.read().splitlines()
+        local_max = 0
+        seat_list = []
+        for i in range(0, len(b_passes)):
+            bp_string = b_passes[i]
+            rowid_string = bp_string[0:7]
+            colid_string = bp_string[7:10]
+            rowid = string_to_binary(rowid_string, "B")
+            colid = string_to_binary(colid_string, "R")
+
+            seat_id = (rowid * 8) + colid
+            seat_list.append(seat_id)
+            if seat_id> local_max:
+                local_max = seat_id
+        print("Largest Found: ", local_max)
+        seat_list.sort()
+        for i in range(1, len(seat_list)):
+            if not (seat_list[i] - 1) == (seat_list[i-1]):
+                print("Gap between, ", seat_list[i-1], " and ", seat_list[i])
